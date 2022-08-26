@@ -1,0 +1,7 @@
+{
+  "name": "Andokala",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
