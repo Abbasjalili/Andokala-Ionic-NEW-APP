@@ -1,0 +1,141 @@
+
+
+<!-- custom code -->
+
+<ion-header page-billing-header class="page-billing-header">
+	<ion-toolbar color="primary">
+		<ion-buttons slot="start">
+			<ion-back-button defaultHref="cart"></ion-back-button>
+		</ion-buttons>
+		<ion-title>Checkout</ion-title>
+		<ion-buttons slot="end">
+			<ion-button (click)="showPopover($event)"><ion-icon name="ellipsis-vertical"></ion-icon></ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+	<ion-toolbar>
+		<ion-tabs>
+			<ion-tab-bar slot="bottom">
+				<ion-tab-button>
+					<ion-icon color="primary" name="golf-outline"></ion-icon>
+					<ion-label color="primary">Address</ion-label>
+				</ion-tab-button>
+				<ion-tab-button>
+					<ion-icon name="boat-outline"></ion-icon>
+					<ion-label>Shipping</ion-label>
+				</ion-tab-button>
+				<ion-tab-button>
+					<ion-icon name="cash-outline"></ion-icon>
+					<ion-label>Payment</ion-label>
+				</ion-tab-button>
+				<ion-tab-button>
+					<ion-icon name="eye-outline"></ion-icon>
+					<ion-label>Review</ion-label>
+				</ion-tab-button>
+			</ion-tab-bar>
+		</ion-tabs>
+	</ion-toolbar>
+</ion-header>
+
+<!-- ./custom code -->
+
+
+<ion-content page-billing-content class="page-billing-content " >
+	
+	<ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed">
+		<ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
+	
+	
+	<form [formGroup]="formBilling">
+	<ion-list-header *ngIf="dataCountries.length != 0">
+		<ion-text color="primary">Billing Address</ion-text>
+	</ion-list-header>
+		
+		<ion-list lines="full" class="ion-no-margin ion-no-padding" *ngIf="dataCountries.length != 0">
+		
+			<ion-item>
+				<ion-label position="stacked">First Name<ion-text color="danger">*</ion-text></ion-label>
+				<ion-input formControlName="first_name" type="text" placeholder="Ahmad"></ion-input>
+			</ion-item>
+		
+			<ion-item>
+				<ion-label position="stacked">Last Name</ion-label>
+				<ion-input formControlName="last_name" type="text" placeholder="Jhony"></ion-input>
+			</ion-item>
+		
+			<ion-item>
+				<ion-label position="stacked">Address<ion-text color="danger">*</ion-text></ion-label>
+				<ion-input formControlName="address_1" type="text" placeholder="Address 1"></ion-input>
+				<ion-input formControlName="address_2" type="text" placeholder="Address 2"></ion-input>
+			</ion-item>
+		
+			<ion-item lines="none">
+				<ion-label position="floating">Country<ion-text color="danger">*</ion-text></ion-label>
+				<ion-select formControlName="country" #country placeholder="Choose Your Country" (ionChange)="updateStates(country.value)" okText="OK" cancelText="Cancel">
+					<ion-select-option *ngFor="let item of dataCountries" [value]="item.code" [innerHTML]="item.name" ></ion-select-option>
+				</ion-select>
+			</ion-item>
+		
+			<ion-item  *ngIf="dataStates.length != 0" >
+				<ion-label position="floating">State</ion-label>
+				<ion-select formControlName="state" placeholder="Choose Your State" okText="OK" cancelText="Cancel">
+					<ion-select-option *ngFor="let item of dataStates" [value]="item.code" [innerHTML]="item.name" ></ion-select-option>
+				</ion-select>
+			</ion-item>
+		
+			<ion-item>
+				<ion-label position="floating">City<ion-text color="danger">*</ion-text></ion-label>
+				<ion-input formControlName="city" type="text" placeholder="West Pasaman"></ion-input>
+			</ion-item>
+		
+			<ion-item>
+				<ion-label position="floating">Postcode<ion-text color="danger">*</ion-text></ion-label>
+				<ion-input formControlName="postcode" type="text" placeholder="12345678"></ion-input>
+			</ion-item>
+		
+			<ion-item>
+				<ion-label position="floating">Email<ion-text color="danger">*</ion-text></ion-label>
+				<ion-input formControlName="email" type="email" placeholder="your@domain.com"></ion-input>
+			</ion-item>
+		
+			<ion-item>
+				<ion-label position="floating">Phone<ion-text color="danger">*</ion-text></ion-label>
+				<ion-input formControlName="phone" type="tel" placeholder="612345678"></ion-input>
+			</ion-item>
+		
+		</ion-list>
+		<ion-list lines="full" class="ion-no-margin ion-no-padding" *ngIf="dataCountries.length == 0">
+			<ion-item *ngFor="let x of [1,2,3,4,5]">
+				<ion-skeleton-text animated></ion-skeleton-text>
+				<ion-skeleton-text animated></ion-skeleton-text>
+			</ion-item>
+		</ion-list>
+	</form>
+
+</ion-content>
+<ion-footer>
+		
+		<ion-grid>
+			<ion-row>
+				<ion-col size="2">
+					<ion-button [routerDirection]="'forward'" [routerLink]="['/cart']" color="medium" size="small" fill="outline" expand="block">
+						<ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+					</ion-button>
+				</ion-col>
+				<ion-col size="4">
+					<ion-button (click)="saveBilling()" size="small" fill="outline" expand="block" color="primary">
+						Save
+					</ion-button>
+				</ion-col>
+				<ion-col size="6">
+					<ion-button *ngIf="nextButton == true" (click)="goToShipping()" fill="solid" expand="block" color="primary">
+						Continue To Shipping
+					</ion-button>
+					<ion-button *ngIf="nextButton != true" disabled="true" fill="solid" expand="block" color="primary">
+						Continue To Shipping
+					</ion-button>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+
+</ion-footer>

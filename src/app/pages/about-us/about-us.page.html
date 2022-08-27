@@ -1,0 +1,51 @@
+
+<ion-header page-about-us-header class="page-about-us-header">
+	<ion-toolbar color="tertiary">
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+		<ion-segment [(ngModel)]="segmentTab"  class="segment">
+			<ion-segment-button value="about-us">About Us</ion-segment-button>
+			<ion-segment-button value="licenses">Licenses</ion-segment-button>
+		</ion-segment>
+		<ion-buttons slot="end">
+			<ion-button (click)="showPopover($event)"><ion-icon name="ellipsis-vertical"></ion-icon></ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+
+<ion-content page-about-us-content class="page-about-us-content " >
+<ion-card  *ngIf="segmentTab=='about-us'">
+	<img src="./assets/images/landscape/image-1.jpg" alt=""/>
+	<ion-card-header>
+		<h1><strong>Andokala</strong> <small>v01.01.01</small></h1>
+	</ion-card-header>
+	<ion-card-content>
+		<p>Welcome to Andokala.</p>
+		<p>by <strong>AB Jalili</strong></p>
+	</ion-card-content>
+</ion-card>
+<ion-card  *ngIf="segmentTab=='about-us'">
+	<ion-list inset>
+	<ion-list-header>
+			Contact Us
+	</ion-list-header>
+		<ion-item appBrowser url="https://www.abs-data.com" >
+			<ion-icon color="danger" name="help-buoy" item-start></ion-icon>
+			<ion-label>Alpha Beta Sigma</ion-label>
+		</ion-item>
+		<ion-item mailApp emailAddress="info@abs-data.com" >
+			<ion-icon color="secondary" name="mail" item-start></ion-icon>
+			<ion-label>info@abs-data.com</ion-label>
+		</ion-item>
+	</ion-list>
+</ion-card>
+<ion-card *ngIf="segmentTab=='licenses'">
+	<ion-card-content>
+		<h2>Licenses</h2>
+		<ul><li><strong>IonicFramework</strong>,<br/>Copyright 2015-present Drifty Co</li></ul>	</ion-card-content>
+</ion-card>
+
+</ion-content>

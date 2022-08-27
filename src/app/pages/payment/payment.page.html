@@ -1,0 +1,117 @@
+
+
+<!-- custom code -->
+
+<ion-header page-billing-header class="page-billing-header">
+	<ion-toolbar color="primary">
+		<ion-buttons slot="start">
+			<ion-back-button defaultHref="shipping"></ion-back-button>
+		</ion-buttons>
+		<ion-title>Checkout</ion-title>
+		<ion-buttons slot="end">
+			<ion-button (click)="showPopover($event)"><ion-icon name="ellipsis-vertical"></ion-icon></ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+	<ion-toolbar>
+		<ion-tabs>
+			<ion-tab-bar slot="bottom">
+				<ion-tab-button>
+					<ion-icon color="primary" name="golf-outline"></ion-icon>
+					<ion-label color="primary">Address</ion-label>
+				</ion-tab-button>
+				<ion-tab-button>
+					<ion-icon color="primary" name="boat-outline"></ion-icon>
+					<ion-label color="primary">Shipping</ion-label>
+				</ion-tab-button>
+				<ion-tab-button>
+					<ion-icon color="primary" name="cash-outline"></ion-icon>
+					<ion-label color="primary">Payment</ion-label>
+				</ion-tab-button>
+				<ion-tab-button>
+					<ion-icon name="eye-outline"></ion-icon>
+					<ion-label>Review</ion-label>
+				</ion-tab-button>
+			</ion-tab-bar>
+		</ion-tabs>
+	</ion-toolbar>
+</ion-header>
+
+<!-- ./custom code -->
+
+
+<ion-content page-payment-content class="page-payment-content " >
+	
+	
+	<ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed">
+		<ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
+	
+	
+	<ion-list-header *ngIf="dataPaymentGateways.length != 0">
+		<ion-text color="primary">Payment Method</ion-text>
+	</ion-list-header>
+	<ion-list *ngIf="dataPaymentGateways.length != 0">
+		<form [formGroup]="formPayment" >
+			<ion-radio-group formControlName="payment_method">
+				<div *ngFor="let item of dataPaymentGateways">
+					<ion-item *ngIf="item.enabled == true">
+						<ion-label>{{ item.title }}</ion-label>
+						<ion-radio slot="start" value="{{ item.id }}"></ion-radio>
+					</ion-item>
+				</div>
+			</ion-radio-group>
+		</form>
+	</ion-list>
+	<ion-list *ngIf="dataPaymentGateways.length == 0">
+			<ion-item>
+				<ion-skeleton-text animated></ion-skeleton-text>
+				<ion-skeleton-text animated></ion-skeleton-text>
+				<ion-skeleton-text animated></ion-skeleton-text>
+				<ion-skeleton-text animated></ion-skeleton-text>
+			</ion-item>
+	</ion-list>
+	<ion-card *ngIf="paymentSelected && paymentSelected.title">
+		<ion-card-header>
+			<ion-card-title>{{ paymentSelected.title }}</ion-card-title>
+		</ion-card-header>
+		<ion-card-content>
+			<p [innerHTML]="paymentSelected.description"></p>
+		</ion-card-content>
+	</ion-card>
+	<ion-card *ngIf="!paymentSelected || !paymentSelected.title">
+		<ion-card-header>
+			<ion-skeleton-text animated></ion-skeleton-text>
+			<ion-skeleton-text animated></ion-skeleton-text>
+		</ion-card-header>
+		<ion-card-content>
+			<ion-skeleton-text animated></ion-skeleton-text>
+			<ion-skeleton-text animated></ion-skeleton-text>
+			<ion-skeleton-text animated></ion-skeleton-text>
+			<ion-skeleton-text animated></ion-skeleton-text>
+		</ion-card-content>
+	</ion-card>
+
+</ion-content>
+<ion-footer>
+		
+		<ion-grid>
+			<ion-row>
+				<ion-col size="2">
+					<ion-button [routerDirection]="'forward'" [routerLink]="['/shipping']" color="medium" size="small" fill="outline" expand="block">
+						<ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+					</ion-button>
+				</ion-col>
+				<ion-col size="4">
+					<ion-button (click)="savePayment()"  size="small" fill="outline" expand="block" color="primary">
+						Save
+					</ion-button>
+				</ion-col>
+				<ion-col size="6">
+					<ion-button (click)="goToReview()" size="small" fill="solid" expand="block" color="primary">
+						Continue To Review
+					</ion-button>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+
+</ion-footer>

@@ -1,0 +1,225 @@
+
+<ion-header page-order-received-header class="page-order-received-header">
+	<ion-toolbar color="primary">
+		<ion-buttons slot="start">
+			<ion-back-button defaultHref="order-histories"></ion-back-button>
+		</ion-buttons>
+		<ion-title>Account</ion-title>
+		<ion-buttons slot="end">
+			<ion-button (click)="showPopover($event)"><ion-icon name="ellipsis-vertical"></ion-icon></ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+
+<ion-content page-order-received-content class="page-order-received-content " >
+	
+	
+	<ion-card>
+		<ion-card-header>
+			<ion-card-subtitle>Order details</ion-card-subtitle>
+		</ion-card-header>
+		<ion-card-content *ngIf="dataOrderRecieved && dataOrderRecieved.number">
+			<table class="table noborder">
+				<tbody>
+					<tr>
+						<td>Order Number</td>
+						<td>: <ion-text color="dark">{{ dataOrderRecieved.number }}</ion-text></td>
+					</tr>
+					<tr>
+						<td>Status</td>
+						<td>: <ion-text color="dark">{{ dataOrderRecieved.status }}</ion-text></td>
+					</tr>
+					<tr>
+						<td>Currency</td>
+						<td>: <ion-text color="dark">{{ dataOrderRecieved.currency }}</ion-text></td>
+					</tr>
+					<tr>
+						<td>Date Created</td>
+						<td>: <ion-text color="dark">{{ dataOrderRecieved.date_created | date:'short' }}</ion-text></td>
+					</tr>
+					<tr>
+						<td>Payment Method</td>
+						<td>: <ion-text color="dark">{{ dataOrderRecieved.payment_method_title }} ({{ dataOrderRecieved.payment_method }})</ion-text></td>
+					</tr>
+				</tbody>
+			</table>
+		</ion-card-content>
+		<ion-card-content *ngIf="!dataOrderRecieved || !dataOrderRecieved.number">
+			<ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+			<ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+			<ion-skeleton-text animated style="width: 90%"></ion-skeleton-text>
+			<ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+		</ion-card-content>
+	</ion-card>
+	
+	
+	<ion-card>
+		<ion-card-header>
+			<ion-card-subtitle>Products</ion-card-subtitle>
+		</ion-card-header>
+		<ion-card-content *ngIf="dataOrderRecieved && dataOrderRecieved.line_items">
+			<div class="table-responsive">
+				<table class="table">
+					<thead>
+						<tr>
+							<th class="text-left">Products</th>
+							<th class="text-right">Quantity</th>
+							<th class="text-right">Price</th>
+							<th class="text-right">Subtotal</th>
+							<th class="text-right">Subtotal Tax</th>
+							<th class="text-right">Total</th>
+							<th class="text-right">Total Tax</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let item of dataOrderRecieved.line_items">
+							<td class="text-left">
+								<h4 [routerDirection]="'root'" [routerLink]="['/product-detail',item.product_id]"><ion-text [innerHTML]="item.name"></ion-text></h4>
+								<p *ngIf="item.meta_data && item.meta_data[0]['value']">Note: <ion-text *ngFor="let metadata of item.meta_data">{{ metadata.value }} </ion-text></p>
+							</td>
+							<td class="text-right"><ion-text>{{ item.quantity }}</ion-text></td>
+							<td class="text-right"><ion-text>{{ item.price }}</ion-text></td>
+							<td class="text-right"><ion-text>{{ item.subtotal }}</ion-text></td>
+							<td class="text-right"><ion-text>{{ item.subtotal_tax }}</ion-text></td>
+							<td class="text-right"><ion-text>{{ item.total }}</ion-text></td>
+							<td class="text-right"><ion-text>{{ item.total_tax }}</ion-text></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+	
+	
+			<table class="table noborder">
+				<tbody>
+					<tr>
+						<td>Discount Total</td>
+						<td>:</td>
+						<td class="text-right">{{ dataOrderRecieved.discount_total }}</td>
+					</tr>
+					<tr>
+						<td>Discount Tax</td>
+						<td>:</td>
+						<td class="text-right">{{ dataOrderRecieved.discount_tax }}</td>
+					</tr>
+					<tr>
+						<td>Shipping Total</td>
+						<td>:</td>
+						<td class="text-right">{{ dataOrderRecieved.shipping_total }}</td>
+					</tr>
+					<tr>
+						<td>Shipping Tax</td>
+						<td>:</td>
+						<td class="text-right">{{ dataOrderRecieved.shipping_tax }}</td>
+					</tr>
+					<tr>
+						<td>Cart Tax</td>
+						<td>:</td>
+						<td class="text-right">{{ dataOrderRecieved.cart_tax }}</td>
+					</tr>
+					<tr>
+						<td>Total</td>
+						<td>:</td>
+						<td class="text-right">{{ dataOrderRecieved.total }}</td>
+					</tr>
+					<tr>
+						<td>Total Tax</td>
+						<td>:</td>
+						<td class="text-right">{{ dataOrderRecieved.total_tax }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</ion-card-content>
+		<ion-card-content *ngIf="!dataOrderRecieved || !dataOrderRecieved.number">
+			<ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+			<ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+			<ion-skeleton-text animated style="width: 90%"></ion-skeleton-text>
+			<ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+		</ion-card-content>
+	</ion-card>
+	
+	
+	<ion-card>
+		<ion-card-header>
+			<ion-card-subtitle>Billing Address</ion-card-subtitle>
+			<ion-card-title *ngIf="dataOrderRecieved && dataOrderRecieved.billing">{{ dataOrderRecieved.billing.first_name }} {{ dataOrderRecieved.billing.last_name }}</ion-card-title>
+			<ion-card-title *ngIf="!dataOrderRecieved || !dataOrderRecieved.billing"><ion-skeleton-text animated style="width: 80%"></ion-skeleton-text></ion-card-title>
+		</ion-card-header>
+		<ion-card-content *ngIf="dataOrderRecieved && dataOrderRecieved.billing">
+			<ion-text *ngIf="dataOrderRecieved.billing.address_1">{{ dataOrderRecieved.billing.address_1 }}</ion-text><br/>
+			<ion-text *ngIf="dataOrderRecieved.billing.address_2">{{ dataOrderRecieved.billing.address_2 }}</ion-text><br/>
+			<ion-text *ngIf="dataOrderRecieved.billing.city">{{ dataOrderRecieved.billing.city }}</ion-text><br/>
+			<ion-text *ngIf="dataOrderRecieved.billing.state">State: {{ dataOrderRecieved.billing.state }}</ion-text>, Postcode: <ion-text *ngIf="dataOrderRecieved.billing.postcode">{{ dataOrderRecieved.billing.postcode }}</ion-text><br/>
+			<ion-text *ngIf="dataOrderRecieved.billing.country">Country: {{ dataOrderRecieved.billing.country }}</ion-text>
+			<h3 class="subtitle">Email</h3>
+			<ion-text *ngIf="dataOrderRecieved.billing.email">{{ dataOrderRecieved.billing.email }}</ion-text>
+			<h3 class="subtitle">Phone</h3>
+			<ion-text *ngIf="dataOrderRecieved.billing.phone">{{ dataOrderRecieved.billing.phone }}</ion-text>
+		</ion-card-content>
+		<ion-card-content *ngIf="!dataOrderRecieved || !dataOrderRecieved.billing">
+			<ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+			<ion-skeleton-text animated></ion-skeleton-text>
+			<ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+		</ion-card-content>
+	</ion-card>
+	
+	
+	<ion-card>
+		<ion-card-header>
+			<ion-card-subtitle>Shipping Address</ion-card-subtitle>
+			<ion-card-title *ngIf="dataOrderRecieved && dataOrderRecieved.shipping">{{ dataOrderRecieved.shipping.first_name }} {{ dataOrderRecieved.shipping.last_name }}</ion-card-title>
+			<ion-card-title *ngIf="!dataOrderRecieved || !dataOrderRecieved.shipping"><ion-skeleton-text animated style="width: 80%"></ion-skeleton-text></ion-card-title>
+		</ion-card-header>
+		<ion-card-content *ngIf="dataOrderRecieved && dataOrderRecieved.shipping">
+			<ion-text *ngIf="dataOrderRecieved.shipping.address_1">{{ dataOrderRecieved.shipping.address_1 }}</ion-text><br/>
+			<ion-text *ngIf="dataOrderRecieved.shipping.address_2">{{ dataOrderRecieved.shipping.address_2 }}</ion-text><br/>
+			<ion-text *ngIf="dataOrderRecieved.shipping.city">{{ dataOrderRecieved.shipping.city }}</ion-text><br/>
+			<ion-text *ngIf="dataOrderRecieved.shipping.state">State: {{ dataOrderRecieved.shipping.state }}</ion-text>, Postcode: <ion-text *ngIf="dataOrderRecieved.shipping.postcode">{{ dataOrderRecieved.shipping.postcode }}</ion-text><br/>
+			<ion-text *ngIf="dataOrderRecieved.shipping.country">Country: {{ dataOrderRecieved.shipping.country }}</ion-text>
+		</ion-card-content>
+		<ion-card-content *ngIf="!dataOrderRecieved || !dataOrderRecieved.shipping">
+			<ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+			<ion-skeleton-text animated></ion-skeleton-text>
+			<ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+		</ion-card-content>
+	</ion-card>
+
+</ion-content>
+<ion-footer>
+		<ion-toolbar>
+			<ion-tabs>
+				<ion-tab-bar slot="bottom">
+					
+					<ion-tab-button [routerDirection]="'root'" [routerLink]="['/home']">
+						<ion-label color="primary">Home</ion-label>
+						<ion-icon color="primary" name="home-outline"></ion-icon>
+					</ion-tab-button>
+					
+					<ion-tab-button [routerDirection]="'root'" [routerLink]="['/products-by-category/0']">
+						<ion-label color="primary">Products</ion-label>
+						<ion-icon color="primary" name="wine-outline"></ion-icon>
+					</ion-tab-button>
+					
+					
+					<ion-tab-button [routerDirection]="'root'" [routerLink]="['/wishlist']">
+						<ion-label color="primary">Wishlist</ion-label>
+						<ion-icon color="primary" name="heart-circle"></ion-icon>
+						<ion-badge *ngIf="count_wishlist!=0" color="danger">{{ count_wishlist }}</ion-badge>
+					</ion-tab-button>
+					
+					<ion-tab-button  [routerDirection]="'root'" [routerLink]="['/cart']">
+						<ion-label color="primary">Cart</ion-label>
+						<ion-icon color="primary" name="cart-outline"></ion-icon>
+						<ion-badge *ngIf="count_cart!=0" color="danger">{{ count_cart }}</ion-badge>
+					</ion-tab-button>
+					
+					<ion-tab-button [routerDirection]="'root'" [routerLink]="['/account']">
+						<ion-label color="primary">Account</ion-label>
+						<ion-icon color="primary" name="person-outline"></ion-icon>
+					</ion-tab-button>
+					
+				</ion-tab-bar>
+			</ion-tabs>
+		</ion-toolbar>
+
+</ion-footer>

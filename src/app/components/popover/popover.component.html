@@ -1,0 +1,6 @@
+<ion-list>
+	<ion-item button  (click)="dismissPopover()" [routerDirection]="'forward'" [routerLink]="'/privacy-policy'"><ion-text color="primary">{{"Privacy Policy"}}</ion-text></ion-item>
+	<ion-item button  ><ion-text color="primary">{{"Dark Mode"}}</ion-text><ion-toggle [(ngModel)]="isDarkMode" (ionChange)="darkMode($event)" slot="end"></ion-toggle></ion-item>
+	<ion-item button  (click)="dismissPopover()" [routerDirection]="'forward'" [routerLink]="'/about-us'"><ion-text color="primary">{{"About Us"}}</ion-text></ion-item>
+	<ion-item button  (click)="dismissPopover()" appBrowser [url]="'https://www.andokala.com/my-account/'" ><ion-text color="primary">{{"Administrator"}}</ion-text></ion-item>
+</ion-list>

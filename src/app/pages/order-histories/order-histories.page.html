@@ -1,0 +1,85 @@
+
+<ion-header page-order-histories-header class="page-order-histories-header">
+	<ion-toolbar color="primary">
+		<ion-buttons slot="start">
+			<ion-back-button defaultHref="account"></ion-back-button>
+		</ion-buttons>
+		<ion-title>Account</ion-title>
+		<ion-buttons slot="end">
+			<ion-button (click)="showPopover($event)"><ion-icon name="ellipsis-vertical"></ion-icon></ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+
+<ion-content page-order-histories-content class="page-order-histories-content " >
+	<ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed">
+		<ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
+	
+	
+	<ion-list-header *ngIf="dataHistories.length != 0">
+		<ion-text color="primary">Order History</ion-text>
+	</ion-list-header>
+	
+	
+	<ion-card  >
+		<ion-item *ngFor="let item of dataHistories" [routerDirection]="'forward'" [routerLink]="['/order-received',item.id]">
+			<ion-label>
+				<h3>Order Number #{{ item.number }}</h3>
+				<p>{{ item.date_created | date:'long' }}</p>
+			</ion-label>
+			<ion-badge color="secondary" *ngIf="item.status =='pending'">{{ item.status }}</ion-badge>
+			<ion-badge color="success" *ngIf="item.status =='processing'">{{ item.status }}</ion-badge>
+			<ion-badge color="tertiary" *ngIf="item.status =='on-hold'">{{ item.status }}</ion-badge>
+			<ion-badge color="medium" *ngIf="item.status =='completed'">{{ item.status }}</ion-badge>
+			<ion-badge color="warning" *ngIf="item.status =='cancelled'">{{ item.status }}</ion-badge>
+			<ion-badge color="danger" *ngIf="item.status =='refunded'">{{ item.status }}</ion-badge>
+			<ion-badge color="dark" *ngIf="item.status =='failed'">{{ item.status }}</ion-badge>
+		</ion-item>
+	</ion-card>
+	
+	
+	<ion-list-header *ngIf="dataHistories.length == 0">
+		<ion-text color="primary">No order history</ion-text>
+	</ion-list-header>
+
+</ion-content>
+<ion-footer>
+		<ion-toolbar>
+			<ion-tabs>
+				<ion-tab-bar slot="bottom">
+					
+					<ion-tab-button [routerDirection]="'root'" [routerLink]="['/home']">
+						<ion-label color="primary">Home</ion-label>
+						<ion-icon color="primary" name="home-outline"></ion-icon>
+					</ion-tab-button>
+					
+					<ion-tab-button [routerDirection]="'root'" [routerLink]="['/products-by-category/0']">
+						<ion-label color="primary">Products</ion-label>
+						<ion-icon color="primary" name="wine-outline"></ion-icon>
+					</ion-tab-button>
+					
+					
+					<ion-tab-button [routerDirection]="'root'" [routerLink]="['/wishlist']">
+						<ion-label color="primary">Wishlist</ion-label>
+						<ion-icon color="primary" name="heart-circle"></ion-icon>
+						<ion-badge *ngIf="count_wishlist!=0" color="danger">{{ count_wishlist }}</ion-badge>
+					</ion-tab-button>
+					
+					<ion-tab-button  [routerDirection]="'root'" [routerLink]="['/cart']">
+						<ion-label color="primary">Cart</ion-label>
+						<ion-icon color="primary" name="cart-outline"></ion-icon>
+						<ion-badge *ngIf="count_cart!=0" color="danger">{{ count_cart }}</ion-badge>
+					</ion-tab-button>
+					
+					<ion-tab-button [routerDirection]="'root'" [routerLink]="['/account']">
+						<ion-label color="primary">Account</ion-label>
+						<ion-icon color="primary" name="person-outline"></ion-icon>
+					</ion-tab-button>
+					
+				</ion-tab-bar>
+			</ion-tabs>
+		</ion-toolbar>
+
+</ion-footer>

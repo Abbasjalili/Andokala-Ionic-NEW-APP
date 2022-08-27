@@ -1,0 +1,24 @@
+[page-home-content]{
+	--background: url("../../../assets/images/background/bg-01.png") no-repeat center center / cover;
+}
+
+	ion-card-header+.card-content-ios {font-size:80% !important;padding: 3px !important;text-overflow: ellipsis !important;white-space: nowrap !important;overflow: hidden !important;}
+	ion-card-header+.card-content-md {font-size:80% !important;padding: 3px !important;text-overflow: ellipsis !important;white-space: nowrap !important;overflow: hidden !important;}
+	ion-slide {display:block !important;}
+	ion-slide .ratio-1x1 {width: 100% !important;padding-top: 100% !important; position: relative !important;}
+	ion-slide .ratio-16x9 {width: 100% !important;padding-top: 56.25% !important; position: relative !important;}
+	ion-slide .ratio-4x3 {width: 100% !important;padding-top: 75% !important; position: relative !important;}
+	ion-slide .ratio-3x2 {width: 100% !important;padding-top: 66.66% !important; position: relative !important;}
+	ion-slide .ratio-8x5 {width: 100% !important;padding-top: 62.5% !important; position: relative !important;}
+	ion-slide ion-card{ margin-top: 0.5em;padding:0.2em;}
+	ion-slide a {text-decoration: none !important;display: block;}
+	p a {text-decoration: none !important;}
+	ion-card-header {padding:.5em !important;}
+	ion-card-header h3{margin: 0px !important;padding: 0px !important;}
+	ion-grid ion-card{padding:0.2em;margin-top: 0;}
+	ion-list-header{margin-top: .5em;font-variant: petite-caps;padding-top: 0;padding-bottom:0;font-size: 1.2em;background-color: #fff;opacity:0.9;font-weight: 600;}
+	ion-list-header ion-text{padding-top: 0.5em;padding-bottom: 0.5em;}
+	.tags {padding-left: 1em;padding-right: 1em;margin-top: 0;}
+	ion-card {opacity:0.9;}
+	ion-slides {opacity:0.9;}
+

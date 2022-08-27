@@ -1,0 +1,15 @@
+[page-cart-content]{
+	--background: url("../../../assets/images/background/bg-01.png") no-repeat center center / cover;
+}
+
+	.empty-products-container{height: 100%;}
+	.empty-products-wrapper{text-align: center;padding-top: 50%;}
+	.empty-products-icon{font-size: 72px;}
+	.empty-products-wrapper h3{font-variant-caps: petite-caps;font-size: 18px;}
+	.estimated-price ion-note{font-size: 14px;}
+	.price {color:#d72828;font-weight:600}
+	ion-list-header{margin-top: .5em;font-variant: petite-caps;padding-top: 0;padding-bottom:0;font-size: 1.2em;background-color: #fff;opacity:0.9;font-weight: 600;}
+	ion-list-header ion-text{padding-top: 0.5em;padding-bottom: 0.5em;}
+	ion-list{opacity: 0.9;}
+	ion-card{opacity:0.9; padding-top:1em; margin-top: 0.5em;}
+

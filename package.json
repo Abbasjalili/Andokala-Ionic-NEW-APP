@@ -19,7 +19,20 @@
     "@angular/platform-browser": "^14.0.0",
     "@angular/platform-browser-dynamic": "^14.0.0",
     "@angular/router": "^14.0.0",
+    "@awesome-cordova-plugins/core": "^5.44.0",
+    "@awesome-cordova-plugins/device": "^5.44.0",
+    "@awesome-cordova-plugins/dialogs": "^5.44.0",
+    "@awesome-cordova-plugins/in-app-browser": "^5.44.0",
+    "@awesome-cordova-plugins/ionic-webview": "^5.44.0",
+    "@awesome-cordova-plugins/keyboard": "^5.44.0",
+    "@awesome-cordova-plugins/splash-screen": "^5.44.0",
+    "@awesome-cordova-plugins/status-bar": "^5.44.0",
+    "@ionic-native/native-storage": "^5.36.0",
     "@ionic/angular": "^6.1.9",
+    "@ionic/storage": "^2.3.1",
+    "@ionic/storage-angular": "^3.0.6",
+    "angular-route": "^1.8.3",
+    "angular-storage": "0.0.15",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",
     "zone.js": "~0.11.4"
@@ -35,11 +48,20 @@
     "@angular/compiler-cli": "^14.0.0",
     "@angular/language-service": "^14.0.0",
     "@ionic/angular-toolkit": "^6.0.0",
+    "@ionic/lab": "3.2.13",
     "@types/jasmine": "~3.6.0",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "5.3.0",
     "@typescript-eslint/parser": "5.3.0",
+    "cordova-plugin-device": "^2.1.0",
+    "cordova-plugin-dialogs": "^2.0.2",
+    "cordova-plugin-inappbrowser": "^5.0.0",
+    "cordova-plugin-ionic-keyboard": "^2.2.0",
+    "cordova-plugin-ionic-webview": "^5.0.0",
+    "cordova-plugin-splashscreen": "^6.0.2",
+    "cordova-plugin-statusbar": "^3.0.0",
+    "cordova-sqlite-storage": "^6.0.0",
     "eslint": "^7.6.0",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-jsdoc": "30.7.6",
@@ -56,5 +78,17 @@
     "ts-node": "~8.3.0",
     "typescript": "~4.7.3"
   },
-  "description": "An Ionic project"
+  "description": "An Ionic project",
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-inappbrowser": {},
+      "cordova-plugin-dialogs": {},
+      "cordova-plugin-device": {},
+      "cordova-plugin-ionic-webview": {},
+      "cordova-plugin-ionic-keyboard": {},
+      "cordova-plugin-statusbar": {},
+      "cordova-plugin-splashscreen": {},
+      "cordova-sqlite-storage": {}
+    }
+  }
 }

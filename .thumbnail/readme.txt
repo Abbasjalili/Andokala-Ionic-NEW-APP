@@ -1,0 +1,1 @@
+Only thumbnail directory

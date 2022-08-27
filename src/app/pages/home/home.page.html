@@ -1,0 +1,254 @@
+
+<ion-header page-home-header class="page-home-header">
+	<ion-toolbar color="primary">
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>Welcome</ion-title>
+		<ion-buttons slot="end">
+			<ion-button (click)="showPopover($event)"><ion-icon name="ellipsis-vertical"></ion-icon></ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+
+<ion-content page-home-content class="page-home-content " >
+	<ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed">
+		<ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
+	<!-- banners -->
+	<ion-slides *ngIf="dataBanners.length != 0" [options]="{slidesPerView:1,autoplay:1}">
+		<ion-slide *ngFor="let item of dataBanners">
+			<ion-card [routerDirection]="'forward'" [routerLink]="['/','products-by-category','0']" >
+			<ion-img *ngIf="item && item['_embedded'] && item['_embedded']['wp:featuredmedia'] && item['_embedded']['wp:featuredmedia'][0] && item['_embedded']['wp:featuredmedia'][0]['media_details'] && item['_embedded']['wp:featuredmedia'][0]['media_details'] && item['_embedded']['wp:featuredmedia'][0]['media_details']['sizes'] && item['_embedded']['wp:featuredmedia'][0]['media_details']['sizes']['large'] && item['_embedded']['wp:featuredmedia'][0]['media_details']['sizes']['large'].source_url" [src]="item['_embedded']['wp:featuredmedia'][0]['media_details']['sizes']['large'].source_url"></ion-img>
+			<ion-img *ngIf="!item || !item['_embedded'] || !item['_embedded']['wp:featuredmedia'] || !item['_embedded']['wp:featuredmedia'][0] || !item['_embedded']['wp:featuredmedia'][0]['media_details'] || !item['_embedded']['wp:featuredmedia'][0]['media_details'] || !item['_embedded']['wp:featuredmedia'][0]['media_details']['sizes'] || !item['_embedded']['wp:featuredmedia'][0]['media_details']['sizes']['large'] || !item['_embedded']['wp:featuredmedia'][0]['media_details']['sizes']['large'].source_url" src="assets/images/placeholder-800x600.png"></ion-img>
+			</ion-card>
+		</ion-slide>
+	</ion-slides>
+	<ion-slides *ngIf="dataBanners.length == 0" [options]="{slidesPerView:1,autoplay:1}">
+		<ion-slide>
+			<ion-card>
+				<ion-img src="assets/images/placeholder-800x600.png"></ion-img>
+			</ion-card>
+		</ion-slide>
+		<ion-slide>
+			<ion-card>
+				<ion-img src="assets/images/placeholder-800x600.png"></ion-img>
+			</ion-card>
+		</ion-slide>
+		<ion-slide>
+			<ion-card>
+				<ion-img src="assets/images/placeholder-800x600.png"></ion-img>
+			</ion-card>
+		</ion-slide>
+	</ion-slides>
+	<!-- ./banners -->
+	<!-- featured -->
+	<ion-list-header>
+		<ion-text color="primary">Featured Products</ion-text>
+	</ion-list-header>
+	<ion-slides *ngIf="dataFeaturedProducts.length != 0" [options]="{slidesPerView:2,autoplay:false}">
+			<ion-slide *ngFor="let item of dataFeaturedProducts">
+				<ion-card [routerDirection]="'forward'" [routerLink]="['/','product-detail',item.id]" >
+					<ion-card-header>
+						<ion-card-title *ngIf="item.name"><h3 [innerHTML]="item.name"></h3></ion-card-title>
+						<ion-card-subtitle color="danger" *ngIf="item.name" [innerHTML]="item.price_html"></ion-card-subtitle>
+					</ion-card-header>
+					<ion-img *ngIf="item.images && item.images[0] && item.images[0].src" [src]="item.images[0].src"></ion-img>
+				</ion-card>
+			</ion-slide>
+	</ion-slides>
+	<ion-slides *ngIf="dataFeaturedProducts.length == 0" [options]="{slidesPerView:2}">
+			<ion-slide>
+				<ion-card>
+					<ion-card-header>
+						<ion-card-title><h3><ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></h3></ion-card-title>
+						<ion-card-subtitle color="danger"><ion-skeleton-text animated style="width: 88%"></ion-skeleton-text></ion-card-subtitle>
+					</ion-card-header>
+					<ion-img src="assets/images/placeholder-480x480.png"></ion-img>
+				</ion-card>
+			</ion-slide>
+			<ion-slide>
+				<ion-card>
+					<ion-card-header>
+						<ion-card-title><h3><ion-skeleton-text animated style="width: 80%"></ion-skeleton-text></h3></ion-card-title>
+						<ion-card-subtitle color="danger"><ion-skeleton-text animated style="width: 88%"></ion-skeleton-text></ion-card-subtitle>
+					</ion-card-header>
+					<ion-img src="assets/images/placeholder-480x480.png"></ion-img>
+				</ion-card>
+			</ion-slide>
+			<ion-slide>
+				<ion-card>
+					<ion-card-header>
+						<ion-card-title><h3><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></h3></ion-card-title>
+						<ion-card-subtitle color="danger"><ion-skeleton-text animated style="width: 88%"></ion-skeleton-text></ion-card-subtitle>
+					</ion-card-header>
+					<ion-img src="assets/images/placeholder-480x480.png"></ion-img>
+				</ion-card>
+			</ion-slide>
+	</ion-slides>
+	<!-- ./featured -->
+	
+	
+	<!-- categories -->
+	<ion-list-header>
+		<ion-text color="primary">Categories</ion-text>
+	</ion-list-header>
+	<ion-slides *ngIf="dataCategories.length != 0" [options]="{slidesPerView:4}">
+		<ion-slide *ngFor="let cat of dataCategories" >
+			<div [routerDirection]="'root'" [routerLink]="['/','products-by-category',cat.id]">
+				<ion-card *ngIf="cat.image && cat.image.src">
+					<ion-card-header  class="ratio-1x1" [ngStyle]="{'background-image':'url(' + cat.image.src + ')','background-size':'cover','background-position':'center'}"></ion-card-header>
+					<ion-card-content>{{ cat.name }}</ion-card-content>
+				</ion-card>
+				<ion-card *ngIf="!cat.image || !cat.image.src">
+					<ion-card-header  class="ratio-1x1" [ngStyle]="{'background-image':'url(\'assets/images/placeholder-480x480.png\')','background-size':'cover','background-position':'center'}"></ion-card-header>
+					<ion-card-content>{{ cat.name }}</ion-card-content>
+				</ion-card>
+			</div>
+		</ion-slide>
+	</ion-slides>
+	<ion-slides *ngIf="dataCategories.length == 0" [options]="{slidesPerView:4}">
+		<ion-slide>
+			<ion-card>
+				<ion-card-header  class="ratio-1x1" [ngStyle]="{'background-image':'url(\'assets/images/placeholder-480x480.png\')','background-size':'cover','background-position':'center'}"></ion-card-header>
+				<ion-card-content><ion-skeleton-text animated style="width: 76%"></ion-skeleton-text></ion-card-content>
+			</ion-card>
+		</ion-slide>
+		<ion-slide>
+			<ion-card>
+				<ion-card-header  class="ratio-1x1" [ngStyle]="{'background-image':'url(\'assets/images/placeholder-480x480.png\')','background-size':'cover','background-position':'center'}"></ion-card-header>
+				<ion-card-content><ion-skeleton-text animated style="width: 88%"></ion-skeleton-text></ion-card-content>
+			</ion-card>
+		</ion-slide>
+		<ion-slide>
+			<ion-card>
+				<ion-card-header  class="ratio-1x1" [ngStyle]="{'background-image':'url(\'assets/images/placeholder-480x480.png\')','background-size':'cover','background-position':'center'}"></ion-card-header>
+				<ion-card-content><ion-skeleton-text animated style="width: 48%"></ion-skeleton-text></ion-card-content>
+			</ion-card>
+		</ion-slide>
+		<ion-slide>
+			<ion-card>
+				<ion-card-header  class="ratio-1x1" [ngStyle]="{'background-image':'url(\'assets/images/placeholder-480x480.png\')','background-size':'cover','background-position':'center'}"></ion-card-header>
+				<ion-card-content><ion-skeleton-text animated style="width: 98%"></ion-skeleton-text></ion-card-content>
+			</ion-card>
+		</ion-slide>
+		<ion-slide>
+			<ion-card>
+				<ion-card-header  class="ratio-1x1" [ngStyle]="{'background-image':'url(\'assets/images/placeholder-480x480.png\')','background-size':'cover','background-position':'center'}"></ion-card-header>
+				<ion-card-content><ion-skeleton-text animated style="width: 38%"></ion-skeleton-text></ion-card-content>
+			</ion-card>
+		</ion-slide>
+		<ion-slide>
+			<ion-card>
+				<ion-card-header  class="ratio-1x1" [ngStyle]="{'background-image':'url(\'assets/images/placeholder-480x480.png\')','background-size':'cover','background-position':'center'}"></ion-card-header>
+				<ion-card-content><ion-skeleton-text animated style="width: 48%"></ion-skeleton-text></ion-card-content>
+			</ion-card>
+		</ion-slide>
+	</ion-slides>
+	<!-- ./categories -->
+	
+	
+	<!-- latest-products -->
+	<ion-list-header>
+		<ion-text color="primary">Latest Products</ion-text>
+	</ion-list-header>
+	<ion-grid *ngIf="dataLatestProducts.length != 0" >
+		<ion-row>
+			<ion-col size="6" size-sm *ngFor="let item of dataLatestProducts">
+				<ion-card [routerDirection]="'forward'" [routerLink]="['/','product-detail',item.id]" >
+					<ion-img *ngIf="item.images && item.images[0] && item.images[0].src" [src]="item.images[0].src"></ion-img>
+					<ion-card-header>
+						<ion-card-title *ngIf="item.name"><h3 [innerHTML]="item.name"></h3></ion-card-title>
+						<ion-card-subtitle color="danger" *ngIf="item.name" [innerHTML]="item.price_html"></ion-card-subtitle>
+						<p><ion-text color="warning" title="{{ item.average_rating }}" color="warning" [innerHTML]="ratingRendered(item.average_rating) | trustHtml"></ion-text>({{ item.rating_count }})</p>
+					</ion-card-header>
+				</ion-card>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+	<ion-grid *ngIf="dataLatestProducts.length == 0" >
+		<ion-row>
+			<ion-col size="6" size-sm>
+				<ion-card >
+					<ion-img src="assets/images/placeholder-480x480.png"></ion-img>
+					<ion-card-header>
+						<ion-card-title><h3><ion-skeleton-text animated style="width: 100%"></ion-skeleton-text></h3></ion-card-title>
+						<ion-card-subtitle color="danger"><ion-skeleton-text animated style="width: 38%"></ion-skeleton-text></ion-card-subtitle>
+						<p><ion-skeleton-text animated style="width: 28%"></ion-skeleton-text></p>
+					</ion-card-header>
+				</ion-card>
+			</ion-col>
+			<ion-col size="6" size-sm>
+				<ion-card >
+					<ion-img src="assets/images/placeholder-480x480.png"></ion-img>
+					<ion-card-header>
+						<ion-card-title><h3><ion-skeleton-text animated style="width: 88%"></ion-skeleton-text></h3></ion-card-title>
+						<ion-card-subtitle color="danger"><ion-skeleton-text animated style="width: 38%"></ion-skeleton-text></ion-card-subtitle>
+						<p><ion-skeleton-text animated style="width: 28%"></ion-skeleton-text></p>
+					</ion-card-header>
+				</ion-card>
+			</ion-col>
+			<ion-col size="6" size-sm>
+				<ion-card >
+					<ion-img src="assets/images/placeholder-480x480.png"></ion-img>
+					<ion-card-header>
+						<ion-card-title><h3><ion-skeleton-text animated style="width: 70%"></ion-skeleton-text></h3></ion-card-title>
+						<ion-card-subtitle color="danger"><ion-skeleton-text animated style="width: 38%"></ion-skeleton-text></ion-card-subtitle>
+						<p><ion-skeleton-text animated style="width: 28%"></ion-skeleton-text></p>
+					</ion-card-header>
+				</ion-card>
+			</ion-col>
+			<ion-col size="6" size-sm>
+				<ion-card >
+					<ion-img src="assets/images/placeholder-480x480.png"></ion-img>
+					<ion-card-header>
+						<ion-card-title><h3><ion-skeleton-text animated style="width: 58%"></ion-skeleton-text></h3></ion-card-title>
+						<ion-card-subtitle color="danger"><ion-skeleton-text animated style="width: 38%"></ion-skeleton-text></ion-card-subtitle>
+						<p><ion-skeleton-text animated style="width: 28%"></ion-skeleton-text></p>
+					</ion-card-header>
+				</ion-card>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+	<!-- ./latest-products -->
+
+</ion-content>
+<ion-footer>
+		<ion-toolbar>
+			<ion-tabs>
+				<ion-tab-bar slot="bottom">
+					
+					<ion-tab-button disabled="true" [routerDirection]="'root'" [routerLink]="['/home']">
+						<ion-label color="primary">Home</ion-label>
+						<ion-icon color="primary" name="home-outline"></ion-icon>
+					</ion-tab-button>
+					
+					<ion-tab-button [routerDirection]="'root'" [routerLink]="['/products-by-category/0']">
+						<ion-label color="primary">Products</ion-label>
+						<ion-icon color="primary" name="wine-outline"></ion-icon>
+					</ion-tab-button>
+					
+					
+					<ion-tab-button [routerDirection]="'root'" [routerLink]="['/wishlist']">
+						<ion-label color="primary">Wishlist</ion-label>
+						<ion-icon color="primary" name="heart-circle"></ion-icon>
+						<ion-badge *ngIf="count_wishlist!=0" color="danger">{{ count_wishlist }}</ion-badge>
+					</ion-tab-button>
+					
+					<ion-tab-button [routerDirection]="'root'" [routerLink]="['/cart']">
+						<ion-label color="primary">Cart</ion-label>
+						<ion-icon color="primary" name="cart-outline"></ion-icon>
+						<ion-badge *ngIf="count_cart!=0" color="danger">{{ count_cart }}</ion-badge>
+					</ion-tab-button>
+					
+					<ion-tab-button [routerDirection]="'root'" [routerLink]="['/account']">
+						<ion-label color="primary">Account</ion-label>
+						<ion-icon color="primary" name="person-outline"></ion-icon>
+					</ion-tab-button>
+					
+				</ion-tab-bar>
+			</ion-tabs>
+		</ion-toolbar>
+
+</ion-footer>

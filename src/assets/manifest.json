@@ -1,0 +1,16 @@
+{
+	"name": "Andokala Lite",
+	"short_name": "Andokala",
+	"start_url": "index.html",
+	"display": "standalone",
+	"icons":[{"src": "assets/icon/logo.png"}],
+	"prefer_related_applications": true,
+	"related_applications": [
+		{
+			"platform": "play",
+			"id": "com.imabuilder.v3.alphabetasigma.andokala"
+		}
+	],
+	"background_color": "#1f67e6",
+	"theme_color": "lightcontent"
+}

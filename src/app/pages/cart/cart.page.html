@@ -1,0 +1,140 @@
+
+<ion-header page-cart-header class="page-cart-header">
+	<ion-toolbar color="primary">
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>Cart</ion-title>
+		<ion-buttons slot="end">
+			<ion-button (click)="showPopover($event)"><ion-icon name="ellipsis-vertical"></ion-icon></ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+
+<ion-content page-cart-content class="page-cart-content " >
+	
+	
+	<ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed">
+		<ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
+	
+	
+	<ion-list class="empty-products-container" lines="none" *ngIf="dataProductsInCart.length == 0">
+		<ion-item>
+			<ion-label class="empty-products-wrapper">
+				<ion-icon class="empty-products-icon" name="cart-outline"></ion-icon>
+				<h3>No products found</h3>
+				<ion-button [routerDirection]="'root'" [routerLink]="['/products-by-category/0']" color="primary">Continue Shopping</ion-button>
+			</ion-label>
+		</ion-item>
+	</ion-list>
+	
+	
+	
+	<ion-list-header *ngIf="dataProductsInCart.length != 0">
+		<ion-text color="primary">Products in Your Cart</ion-text>
+	</ion-list-header>
+	<ion-card *ngIf="dataProductsInCart.length != 0">
+		<ion-item-sliding size-sm *ngFor="let item of dataProductsInCart">
+			<ion-item>
+				<ion-thumbnail slot="start">
+					<ion-img [src]="item.image"></ion-img>
+				</ion-thumbnail>
+				<ion-label>
+					<h2 [innerHTML]="item.name"></h2>
+					<h3>{{ item.qty }} Item</h3>
+					<p class="price" [innerHTML]="item.price_html"></p>
+				</ion-label>
+				<ion-note slot="end" [innerHTML]="item.note"></ion-note>
+			</ion-item>
+			<ion-item-options side="end">
+				<ion-item-option color="primary" (click)="editProductInCart(item.id)">Edit</ion-item-option>
+				<ion-item-option color="danger" (click)="removeProductInCart(item.id)">Delete</ion-item-option>
+			</ion-item-options>
+			<ion-item-options side="start" >
+				<ion-item-option color="primary" [routerDirection]="'forward'" [routerLink]="['/','product-detail',item.id]">Detail</ion-item-option>
+			</ion-item-options>
+		</ion-item-sliding>
+		<ion-item lines="none">
+			<ion-button fill="outline" (click)="clearCart()" slot="end" color="primary"><ion-icon name="reload-circle"></ion-icon> Clean Up</ion-button>
+		</ion-item>
+	</ion-card>
+	<ion-list-header *ngIf="dataProductsInCart.length != 0">
+		<ion-text color="primary">Note</ion-text>
+	</ion-list-header>
+	<ion-card *ngIf="dataProductsInCart.length != 0">
+		<ion-card-content>
+			<p class="note">Actual prices will appear after checkout is complete</p>
+		</ion-card-content>
+	</ion-card>
+	<ion-list-header *ngIf="dataProductsInCart.length != 0">
+		<ion-text color="primary">Discount</ion-text>
+	</ion-list-header>
+	<ion-card *ngIf="dataProductsInCart.length != 0">
+		<ion-item lines="none">
+			<ion-label position="stacked">Coupon Code</ion-label>
+			<ion-input placeholder="DISCOUNT09" [(ngModel)]="coupon" type="text"></ion-input>
+		</ion-item>
+		<ion-item lines="none">
+			<ion-button fill="outline" (click)="applyCoupon()" slot="end" color="primary"><ion-icon name="reader-outline"></ion-icon> Apply</ion-button>
+		</ion-item>
+	</ion-card>
+
+</ion-content>
+<ion-footer>
+		
+		<ion-grid  *ngIf="dataProductsInCart.length != 0">
+			<ion-row>
+				<ion-col size="5">
+					<ion-label>
+						<h4>Total</h4>
+						<h2 class="price">{{ priceTotal | currency:currencySymbol }}</h2>
+					</ion-label>
+				</ion-col>
+				<ion-col size="2">
+				</ion-col>
+				<ion-col size="5">
+					<ion-button expand="block" (click)="saveOrder()" color="danger">
+						Checkout
+					</ion-button>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+		<ion-toolbar>
+			<ion-tabs>
+				<ion-tab-bar slot="bottom">
+					
+					<ion-tab-button [routerDirection]="'root'" [routerLink]="['/home']">
+						<ion-label color="primary">Home</ion-label>
+						<ion-icon color="primary" name="home-outline"></ion-icon>
+					</ion-tab-button>
+					
+					<ion-tab-button [routerDirection]="'root'" [routerLink]="['/products-by-category/0']">
+						<ion-label color="primary">Products</ion-label>
+						<ion-icon color="primary" name="wine-outline"></ion-icon>
+					</ion-tab-button>
+					
+					
+					<ion-tab-button [routerDirection]="'root'" [routerLink]="['/wishlist']">
+						<ion-label color="primary">Wishlist</ion-label>
+						<ion-icon color="primary" name="heart-circle"></ion-icon>
+						<ion-badge *ngIf="count_wishlist!=0" color="danger">{{ count_wishlist }}</ion-badge>
+					</ion-tab-button>
+					
+					<ion-tab-button disabled="true" [routerDirection]="'root'" [routerLink]="['/cart']">
+						<ion-label color="primary">Cart</ion-label>
+						<ion-icon color="primary" name="cart-outline"></ion-icon>
+						<ion-badge *ngIf="count_cart!=0" color="danger">{{ count_cart }}</ion-badge>
+					</ion-tab-button>
+					
+					<ion-tab-button [routerDirection]="'root'" [routerLink]="['/account']">
+						<ion-label color="primary">Account</ion-label>
+						<ion-icon color="primary" name="person-outline"></ion-icon>
+					</ion-tab-button>
+					
+				</ion-tab-bar>
+			</ion-tabs>
+		</ion-toolbar>
+
+</ion-footer>

@@ -1,0 +1,56 @@
+
+<ion-header page-account-header class="page-account-header">
+	<ion-toolbar color="primary">
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>My account</ion-title>
+		<ion-buttons slot="end">
+			<ion-button (click)="showPopover($event)"><ion-icon name="ellipsis-vertical"></ion-icon></ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+
+<ion-content page-account-content class="page-account-content " >
+	<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			pullingText="Pull to refresh"
+			refreshingSpinner="circles"
+			refreshingText="Refreshing..."
+			>
+		</ion-refresher-content>
+	</ion-refresher>
+	
+	<ion-card *ngFor="let user of ( users | async )">
+		<ion-item>
+			<ion-avatar slot="start">
+				<img *ngIf="user['avatar_urls'] && user['avatar_urls'][96]" src="{{ user['avatar_urls'][96] }}" />
+			</ion-avatar>
+			<ion-label>
+				<h2 [innerHTML]="user.name"></h2>
+				<p [innerHTML]="user.slug"></p>
+			</ion-label>
+		</ion-item>
+		<ion-card-content>
+			<p [innerHTML]="user.description"></p>
+		</ion-card-content>
+		<ion-row no-padding *ngIf="user.url">
+			<ion-col text-right>
+				<ion-button ion-button clear small color="danger" icon-start appBrowser [url]="user.url"  >
+					<ion-icon name="share-alt"></ion-icon>
+					Website
+				</ion-button>
+			</ion-col>
+		</ion-row>
+	</ion-card>
+	
+	<ion-card *ngIf="dataUsers.length == 0">
+		<ion-card-content>
+			There are no users
+		</ion-card-content>
+	</ion-card>
+	
+
+</ion-content>

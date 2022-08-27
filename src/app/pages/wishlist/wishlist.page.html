@@ -1,0 +1,97 @@
+
+<ion-header page-wishlist-header class="page-wishlist-header">
+	<ion-toolbar color="primary">
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>Wishlist</ion-title>
+		<ion-buttons slot="end">
+			<ion-button (click)="showPopover($event)"><ion-icon name="ellipsis-vertical"></ion-icon></ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+
+<ion-content page-wishlist-content class="page-wishlist-content " >
+	
+	<ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed">
+		<ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
+	
+	
+	<ion-list class="empty-products-container" lines="none" *ngIf="dataWishLists.length == 0">
+		<ion-item>
+			<ion-label class="empty-products-wrapper">
+				<ion-icon name="heart-outline"></ion-icon>
+				<h3>No products found</h3>
+			</ion-label>
+		</ion-item>
+	</ion-list>
+	
+	
+	<ion-list-header *ngIf="dataWishLists.length != 0">
+		<ion-text color="primary">Products in Your Wishlist</ion-text>
+	</ion-list-header>
+	<ion-card *ngIf="dataWishLists.length != 0">
+		<ion-item-sliding *ngFor="let item of dataWishLists">
+			<ion-item [routerDirection]="'forward'" [routerLink]="['/','product-detail',item.id]">
+				<ion-thumbnail slot="start">
+					<ion-img *ngIf="item.images && item.images[0] && item.images[0].src" [src]="item.images[0].src"></ion-img>
+				</ion-thumbnail>
+				<ion-label>
+					<h3 *ngIf="item.name" [innerHTML]="item.name"></h3>
+					<ion-text color="danger" *ngIf="item.name" [innerHTML]="item.price_html"></ion-text>
+				</ion-label>
+				<ion-note color="warning" slot="end"><ion-text title="{{ item.average_rating }}" color="warning" [innerHTML]="ratingRendered(item.average_rating) | trustHtml"></ion-text></ion-note>
+			</ion-item>
+			<ion-item-options side="end">
+				<ion-item-option color="danger" (click)="removeWishlist(item.id)">Delete</ion-item-option>
+			</ion-item-options>
+			<ion-item-options side="start" >
+				<ion-item-option color="primary" [routerDirection]="'forward'" [routerLink]="['/','product-detail',item.id]">Detail</ion-item-option>
+			</ion-item-options>
+		</ion-item-sliding>
+		<ion-item lines="none">
+			<ion-button fill="outline" (click)="clearWishlist()" slot="end" color="danger"><ion-icon name="reload-circle"></ion-icon> Clean Up</ion-button>
+		</ion-item>
+	</ion-card>
+
+</ion-content>
+<ion-footer>
+		<ion-toolbar>
+			<ion-tabs>
+				<ion-tab-bar slot="bottom">
+					
+					<ion-tab-button [routerDirection]="'root'" [routerLink]="['/home']">
+						<ion-label color="primary">Home</ion-label>
+						<ion-icon color="primary" name="home-outline"></ion-icon>
+					</ion-tab-button>
+					
+					<ion-tab-button [routerDirection]="'root'" [routerLink]="['/products-by-category/0']">
+						<ion-label color="primary">Products</ion-label>
+						<ion-icon color="primary" name="wine-outline"></ion-icon>
+					</ion-tab-button>
+					
+					
+					<ion-tab-button disabled="true" [routerDirection]="'root'" [routerLink]="['/wishlist']">
+						<ion-label color="primary">Wishlist</ion-label>
+						<ion-icon color="primary" name="heart-circle"></ion-icon>
+						<ion-badge *ngIf="count_wishlist!=0" color="danger">{{ count_wishlist }}</ion-badge>
+					</ion-tab-button>
+					
+					<ion-tab-button [routerDirection]="'root'" [routerLink]="['/cart']">
+						<ion-label color="primary">Cart</ion-label>
+						<ion-icon color="primary" name="cart-outline"></ion-icon>
+						<ion-badge *ngIf="count_cart!=0" color="danger">{{ count_cart }}</ion-badge>
+					</ion-tab-button>
+					
+					<ion-tab-button [routerDirection]="'root'" [routerLink]="['/account']">
+						<ion-label color="primary">Account</ion-label>
+						<ion-icon color="primary" name="person-outline"></ion-icon>
+					</ion-tab-button>
+					
+				</ion-tab-bar>
+			</ion-tabs>
+		</ion-toolbar>
+
+</ion-footer>

@@ -1,0 +1,25 @@
+[page-account-content]{
+	--background: url("../../../assets/images/background/bg-01.png") no-repeat center center / cover;
+}
+
+	ion-card {
+		--background: #fff;
+		opacity:0.9;
+	}
+	ion-refresher{
+		position: static;
+	}
+	p{
+		margin-top: 0;
+		margin-bottom: 12px;
+	}
+	blockquote {
+		border-left: 5px solid #ddd;
+		margin-left: 0;
+		margin-right: 0;
+		padding-left: 1.4em;
+	}
+	img {
+		height: auto;
+	}
+

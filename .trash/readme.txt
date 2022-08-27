@@ -1,0 +1,1 @@
+Only trash directory

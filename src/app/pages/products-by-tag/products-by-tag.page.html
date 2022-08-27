@@ -1,0 +1,92 @@
+
+<ion-header page-products-by-tag-header class="page-products-by-tag-header">
+	<ion-toolbar color="primary">
+		<ion-buttons slot="start">
+			<ion-back-button defaultHref="home"></ion-back-button>
+		</ion-buttons>
+		<ion-title>Products</ion-title>
+		<ion-buttons slot="end">
+			<ion-button (click)="showPopover($event)"><ion-icon name="ellipsis-vertical"></ion-icon></ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+	<ion-toolbar app-searchbar color="primary">
+		<ion-searchbar  [(ngModel)]="filterQuery" (ionInput)="filterItems($event)" ></ion-searchbar>
+	</ion-toolbar>
+</ion-header>
+
+
+<ion-content page-products-by-tag-content class="page-products-by-tag-content " >
+	<ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed">
+		<ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
+	
+	<ion-list-header *ngIf="dataProducts && dataProducts[0] && dataProducts[0].tags && dataProducts[0].tags[0] && dataProducts[0].tags[0].name">
+		<ion-text color="primary" *ngIf="dataId !='0'" >Tags : {{ dataProducts[0].tags[0].name }}</ion-text>
+		<ion-text color="primary" *ngIf="dataId =='0'" >Tags : All</ion-text>
+	</ion-list-header>
+	
+	<ion-list-header *ngIf="dataProducts.length == 0">
+		<ion-text color="primary">No products found</ion-text>
+	</ion-list-header>
+	
+	
+	<ion-grid>
+		<ion-row>
+			<ion-col size="6" size-sm *ngFor="let item of dataProducts">
+				<ion-card [routerDirection]="'forward'" [routerLink]="['/','product-detail',item.id]" >
+					<ion-img *ngIf="item.images && item.images[0] && item.images[0].src" [src]="item.images[0].src"></ion-img>
+					<ion-card-header>
+						<ion-card-title *ngIf="item.name"><h3 [innerHTML]="item.name"></h3></ion-card-title>
+						<ion-card-subtitle color="danger" *ngIf="item.name" [innerHTML]="item.price_html"></ion-card-subtitle>
+						<p><ion-text color="warning" title="{{ item.average_rating }}" color="warning" [innerHTML]="ratingRendered(item.average_rating) | trustHtml"></ion-text>({{ item.rating_count }})</p>
+					</ion-card-header>
+				</ion-card>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+	
+	
+	<ion-infinite-scroll (ionInfinite)="loadMore($event)">
+		<ion-infinite-scroll-content></ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+	
+
+</ion-content>
+<ion-footer>
+	<ion-toolbar>
+		<ion-tabs>
+			<ion-tab-bar slot="bottom">
+				
+				<ion-tab-button [routerDirection]="'root'" [routerLink]="['/home']">
+					<ion-label color="primary">Home</ion-label>
+					<ion-icon color="primary" name="home-outline"></ion-icon>
+				</ion-tab-button>
+				
+				<ion-tab-button disabled="true" [routerDirection]="'root'" [routerLink]="['/products-by-category/0']">
+					<ion-label color="primary">Products</ion-label>
+					<ion-icon color="primary" name="wine-outline"></ion-icon>
+				</ion-tab-button>
+				
+				
+				<ion-tab-button [routerDirection]="'root'" [routerLink]="['/wishlist']">
+					<ion-label color="primary">Wishlist</ion-label>
+					<ion-icon color="primary" name="heart-circle"></ion-icon>
+						<ion-badge *ngIf="count_wishlist!=0" color="danger">{{ count_wishlist }}</ion-badge>
+				</ion-tab-button>
+				
+				<ion-tab-button [routerDirection]="'root'" [routerLink]="['/cart']">
+					<ion-label color="primary">Cart</ion-label>
+					<ion-icon color="primary" name="cart-outline"></ion-icon>
+						<ion-badge *ngIf="count_cart!=0" color="danger">{{ count_cart }}</ion-badge>
+				</ion-tab-button>
+				
+				<ion-tab-button [routerDirection]="'root'" [routerLink]="['/account']">
+					<ion-label color="primary">Account</ion-label>
+					<ion-icon color="primary" name="person-outline"></ion-icon>
+				</ion-tab-button>
+				
+			</ion-tab-bar>
+		</ion-tabs>
+	</ion-toolbar>
+
+</ion-footer>
